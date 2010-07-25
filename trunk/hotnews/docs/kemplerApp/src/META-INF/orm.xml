@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+	<persistence-unit-metadata>
+		<!-- -->
+		<xml-mapping-metadata-complete />
+		<persistence-unit-defaults>
+			<cascade-persist />
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	
+	<mapped-superclass class="com.kemplerEnergy.model.BaseObject"
+		access="PROPERTY">
+		<attributes>
+			<id name="id">
+				<generated-value strategy="AUTO" />
+			</id>
+		</attributes>
+	</mapped-superclass>
+
+	<entity class="com.kemplerEnergy.model.Commodity">
+		<table name="COMMODITY"></table>
+		<attribute-override name="id">
+			<column name="COMMODITY_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="name">
+				<column name="NAME" />
+			</basic>
+		</attributes>
+	</entity>
+	
+	<entity class="com.kemplerEnergy.model.MarketZone">
+		<table name="MARKET_ZONE"></table>
+		<attribute-override name="id">
+			<column name="MARKET_ZONE_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="name">
+				<column name="NAME" />
+			</basic>
+		</attributes>
+	</entity>	
+
+	<entity class="com.kemplerEnergy.model.Product">
+		<table name="PRODUCT"></table>
+		<attribute-override name="id">
+			<column name="PRODUCT_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="name">
+				<column name="NAME" />
+			</basic>
+			<basic name="defaultUnit">
+				<column name="SHIP_UNIT" />
+			</basic>		
+			<basic name="physicalProduct">
+				<column name="PHYSICAL" />
+			</basic>				
+			<many-to-one name="defaultShipMode" 
+				target-entity="com.kemplerEnergy.model.ShipMode">
+				<join-column name="SHIP_MODE"
+					referenced-column-name="SHIP_MODE_ID" />
+			</many-to-one>	
+			<many-to-one name="marketZone" 
+				target-entity="com.kemplerEnergy.model.MarketZone">
+				<join-column name="MARKET_ZONE"
+					referenced-column-name="MARKET_ZONE_ID" />
+			</many-to-one>		
+			<many-to-one name="commodityType" 
+				target-entity="com.kemplerEnergy.model.Commodity">
+				<join-column name="COMMODITY"
+					referenced-column-name="COMMODITY_ID" />
+			</many-to-one>								
+		</attributes>
+	</entity>	
+
+	<entity class="com.kemplerEnergy.model.Address">
+		<table name="ADDRESS"></table>
+		<attribute-override name="id">
+			<column name="Address_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>
+		<attributes>
+			<basic name="streetLine1">
+				<column name="STREET_LINE_1" />
+			</basic>
+			<basic name="streetLine2">
+				<column name="STREET_LINE_2" />
+			</basic>
+			<basic name="city">
+				<column name="City" />
+			</basic>
+			<basic name="state">
+				<column name="State" />
+			</basic>
+			<basic name="zipCode">
+				<column name="ZipCode" />
+			</basic>
+			<basic name="country">
+				<column name="Country" />
+			</basic>
+			<many-to-one name="counterParty" 
+				target-entity="com.kemplerEnergy.model.CounterParty">
+				<join-column name="Counter_Party_ID"
+					referenced-column-name="COUNTER_PARTY_ID" />
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>
+			</many-to-one>
+		</attributes>
+	</entity>
+
+	<entity class="com.kemplerEnergy.model.ShipMode">
+		<table name="ship_mode"></table>
+		<attribute-override name="id">
+			<column name="SHIP_MODE_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="mode">
+				<column name="MODE" />
+			</basic>
+		</attributes>
+	</entity>
+
+	<!-- CounterParty and all its children classes -->
+	<entity class="com.kemplerEnergy.model.CounterParty">
+		<table name="counter_party"></table>
+		<inheritance strategy="JOINED"/>
+		<attribute-override name="id">
+			<column name="COUNTER_PARTY_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="name">
+				<column name="NAME" />
+			</basic>
+			<basic name="fullName">
+				<column name="FULL_NAME" />
+			</basic>
+			<basic name="phone">
+				<column name="Phone" />
+			</basic>
+			<one-to-many name="addresses" mapped-by="counterParty">
+			</one-to-many>
+		</attributes>
+	</entity>
+	
+	<entity class="com.kemplerEnergy.model.EPAPartner">
+		<table name="EPA_PARTNER"></table>
+		<primary-key-join-column name="EPA_PARTNER_ID"/>
+		<attributes>
+			<basic name="epaNo">
+				<column name="EPA_Entity_Number" />
+			</basic>
+			<basic name="email">
+				<column name="EMAIL" />
+			</basic>
+			<basic name="contact">
+				<column name="CONTACT" />
+			</basic>
+		</attributes>
+	</entity>
+
+	<entity class="com.kemplerEnergy.model.Broker">
+		<table name="BROKER"></table>
+		<primary-key-join-column name="BROKER_ID"/>
+		<attributes>
+			<basic name="balance">
+				<column name="BALANCE" />
+			</basic>
+		</attributes>
+	</entity>
+	
+	<!-- End of CounterParty children classes -->
+	
+	<entity class="com.kemplerEnergy.model.rins.BOLInfo">
+		<table name="RINS_INVOICE_BOLNO"></table>
+		<attribute-override name="id">
+			<column name="BOL_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>
+		<attributes>
+			<basic name="bolNumber">
+				<column name="BOL_Ticket_Number"/>
+			</basic>		
+			<basic name="quantity">
+				<column name="QUANTITY"/>
+			</basic>
+			<basic name="loadNumber">
+				<column name="LOAD_NUMBER"/>
+			</basic>
+			
+			<many-to-one name="invoice" target-entity="com.kemplerEnergy.model.rins.Invoice">
+				<join-column name="INVOICE_ID"/>
+			</many-to-one>
+		</attributes>
+	</entity>
+	
+	<entity class="com.kemplerEnergy.model.rins.Invoice">
+		<table name="INVOICE"></table>
+		<secondary-table name="INVOICE_GAP"></secondary-table>
+		<attribute-override name="id">
+			<column name="Invoice_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="invoiceNo">
+				<column name="INVOICE_NO" />
+			</basic>
+			<basic name="invoiceDate">
+				<column name="Invoice_Date" />
+			</basic>
+			<basic name="invoiceType">
+				<column name="Invoice_Type" />
+			</basic>
+			<basic name="expectedGallons">
+				<column name="EXPECTED_GALLONS" />
+			</basic>
+			<basic name="transferDate">
+				<column name="Transfer_Date" />
+			</basic>
+			<basic name="versionNo">
+				<column name="VERSION_NO"/>
+			</basic>
+			<basic name="createTime">
+				<column name="Create_Time" />
+			</basic>
+			<basic name="status">
+				<column name="Status" />
+			</basic>
+			<basic name="rptdK1">
+				<column name="RPTD_NO_K1" />
+			</basic>	
+			<basic name="rptdK2">
+				<column name="RPTD_NO_K2" />
+			</basic>
+			<basic name="invoicePath">
+				<column name="INVOICE_PATH" />
+			</basic>
+			<basic name="rptdPath">
+				<column name="RPTD_PATH" />
+			</basic>				
+			<basic name="csvPath">
+				<column name="CSV_PATH" />
+			</basic>	
+			
+			<basic name="gaps">
+				<column name="GAPS" table="INVOICE_GAP"/>
+				<lob/>
+			</basic>			
+			
+			<many-to-one name="lastInvoice">
+				<join-column name="LAST_INVOICE_ID" />
+			</many-to-one>
+			
+			<many-to-one name="mode"
+				target-entity="com.kemplerEnergy.model.ShipMode">
+				<join-column name="Ship_Mode_ID"
+					referenced-column-name="SHIP_MODE_ID" />
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>
+			</many-to-one>
+			
+			<many-to-one name="epaPartner"
+				target-entity="com.kemplerEnergy.model.EPAPartner">
+				<join-column name="EPA_PARTNER_ID"
+					referenced-column-name="EPA_PARTNER_ID" />
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>
+			</many-to-one>
+			
+			<one-to-many name="bolInfo" mapped-by="invoice">
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+			
+			<many-to-many name="rins" fetch="EAGER">
+				<order-by></order-by>
+				<join-table name="rin_invoice">
+					<join-column name="INVOICE_ID" unique="false"/>
+					<inverse-join-column name="RIN_ID" unique="false"/>
+				</join-table>
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>
+			</many-to-many>
+			
+		</attributes>
+	</entity>
+	
+
+	<entity class="com.kemplerEnergy.model.rins.RIN">
+		<table name="rin"></table>
+		<secondary-table name="RET_RIN"></secondary-table>
+		<attribute-override name="id">
+			<column name="RIN_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>
+		<attributes>
+			<basic name="uniRIN">
+				<column name="UNI_RIN" />
+			</basic>
+			<basic name="gallonAmount">
+				<column name="Gallon_Amount" />
+			</basic>
+			<basic name="rinType">
+				<column name="RIN_Type" />
+			</basic>
+			<basic name="productionYear">
+				<column name="Production_Year" />
+			</basic>
+			<basic name="companyId">
+				<column name="Company_Registration_ID" />
+			</basic>
+			<basic name="facilityId">
+				<column name="Facility_Registration_ID" />
+			</basic>
+			<basic name="batchNbr">
+				<column name="Batch_Nbr" />
+			</basic>
+			<basic name="equiValue">
+				<column name="Equivalence_Value" />
+			</basic>
+			<basic name="energyType">
+				<column name="Renewable_Energy_Type" />
+			</basic>
+			<basic name="startGallon">
+				<column name="Starting_Gallon_Nbr" />
+			</basic>
+			<basic name="endGallon">
+				<column name="Ending_Gallon_Nbr" />
+			</basic>
+			<basic name="rinStatus">
+				<column name="Status" />
+			</basic>
+			<basic name="validationMask">
+				<column name="Validation_mask" />
+			</basic>
+			<basic name="retiredCode">
+				<column name="CODE" table="RET_RIN"/>
+			</basic>
+			<basic name="retiredDate">
+				<column name="R_DATE" table="RET_RIN"/>
+			</basic>
+			<many-to-one name="originalRIN">
+				<join-column name="Origin_RIN_ID" />
+			</many-to-one>
+			<many-to-many name="invoices" mapped-by="rins">
+			</many-to-many>
+		</attributes>
+	</entity>
+	
+	<!-- User Access Control -->
+	<entity class="com.kemplerEnergy.model.admin.Group">
+		<table name="ADMIN_GROUP"></table>
+		<attribute-override name="id">
+			<column name="GROUP_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="name">
+				<column name="GROUP_NAME" />
+			</basic>
+
+			<many-to-many name="usableMethods">
+				<join-table name="ADMIN_ACCESS">
+					<join-column name="GROUP_ID" unique="false"/>
+					<inverse-join-column name="METHOD_ID" unique="false"/>
+				</join-table>
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>
+			</many-to-many>
+		</attributes>
+	</entity>	
+	
+	<entity class="com.kemplerEnergy.model.admin.Method">
+		<table name="ADMIN_METHOD"></table>
+		<attribute-override name="id">
+			<column name="METHOD_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="name">
+				<column name="METHOD_NAME" />
+			</basic>
+		</attributes>
+	</entity>
+	
+	<entity class="com.kemplerEnergy.model.admin.User">
+		<table name="ADMIN_USER"></table>
+		<inheritance strategy="JOINED"/>
+		<attribute-override name="id">
+			<column name="USER_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="userName">
+				<column name="USER_NAME" />
+			</basic>
+			<basic name="password">
+				<column name="USER_PASSWORD" />
+			</basic>
+			<basic name="phone">
+				<column name="PHONE" />
+			</basic>
+			<basic name="email">
+				<column name="EMAIL" />
+			</basic>						
+			<basic name="IM">
+				<column name="INSTANT_MESSENGER" />
+			</basic>
+			<basic name="lastName">
+				<column name="LAST_NAME" />
+			</basic>
+			<basic name="firstName">
+				<column name="FIRST_NAME" />
+			</basic>									
+			<many-to-many name="groups">
+				<join-table name="ADMIN_USER_GROUP">
+					<join-column name="USER_ID" unique="false"/>
+					<inverse-join-column name="GROUP_ID" unique="false"/>
+				</join-table>
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>
+			</many-to-many>
+		</attributes>
+	</entity>	
+		
+	<!-- Trade Capture 
+	<entity class="com.kemplerEnergy.model.tradecapture.Ticket">
+		<table name="TC_TICKET"></table>
+		<attribute-override name="id">
+			<column name="TICKET_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="tradeDate">
+				<column name="TRADE_DATE" />
+			</basic>
+			<basic name="createTime">
+				<column name="CREATE_TIME" />
+			</basic>
+			<basic name="comment">
+				<column name="COMMENT" />
+			</basic>
+			<basic name="ticketNo">
+				<column name="TICKET_NO" />
+			</basic>
+			<basic name="retiredDate">
+				<column name="STATUS" />
+			</basic>
+			
+			<many-to-one name="trader" 
+				target-entity="com.kemplerEnergy.model.tradecapture.Trader">
+				<join-column name="TRADER_ID"
+					referenced-column-name="TRADER_ID" />
+				<cascade>
+					<cascade-merge/>
+					<cascade-refresh/>
+				</cascade>					
+			</many-to-one>	
+			
+			<many-to-one name="broker" 
+				target-entity="com.kemplerEnergy.model.Broker">
+				<join-column name="BROKER_ID"
+					referenced-column-name="BROKER_ID" />
+			</many-to-one>	
+			<many-to-one name="counterParty" 
+				target-entity="com.kemplerEnergy.model.CounterParty">
+				<join-column name="COUNTER_PARTY_ID"
+					referenced-column-name="COUNTER_PARTY_ID" />
+			</many-to-one>
+					
+			<many-to-one name="purchaseContract" 
+				target-entity="com.kemplerEnergy.model.tradecapture.Contract">
+				<join-column name="PURCHASE_CONTRACT_ID"
+					referenced-column-name="CONTRACT_ID" />
+			</many-to-one>	
+			<many-to-one name="saleContract" 
+				target-entity="com.kemplerEnergy.model.tradecapture.Contract">
+				<join-column name="SALE_CONTRACT_ID"
+					referenced-column-name="CONTRACT_ID" />
+			</many-to-one>				
+		</attributes>
+	</entity>	
+	
+	<entity class="com.kemplerEnergy.model.tradecapture.Trader">
+		<table name="TC_TRADER"></table>
+		<primary-key-join-column name="TRADER_ID"/>
+		<attributes>
+			<one-to-many name="tickets" mapped-by="trader">
+			</one-to-many>
+		</attributes>
+	</entity>
+	
+
+	<entity class="com.kemplerEnergy.model.tradecapture.Contract">
+		<table name="TC_CONTRACT"></table>
+		<attribute-override name="id">
+			<column name="CONTRACT_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="tradeType">
+				<column name="TRADE_TYPE" />
+			</basic>
+			<basic name="tradePeriod">
+				<column name="TRADE_PERIOD" />
+			</basic>
+			<basic name="pricingType">
+				<column name="PRICING_TYPE" />
+			</basic>
+			<basic name="futurePrice">
+				<column name="FUTURE_PRICE" />
+			</basic>
+			<basic name="basis">
+				<column name="BASIS" />
+			</basic>
+			<basic name="fullyPrice">
+				<column name="FULLY_PRICE" />
+			</basic>
+			<basic name="contractType">
+				<column name="CONTRACT_TYPE" />
+			</basic>		
+							
+			<many-to-one name="productType" 
+				target-entity="com.kemplerEnergy.model.Product">
+				<join-column name="PRODUCT_ID"
+					referenced-column-name="PRODUCT_ID" />
+			</many-to-one>
+				
+			<many-to-one name="ticket" 
+				target-entity="com.kemplerEnergy.model.tradecapture.Ticket">
+				<join-column name="TICKET_ID"
+					referenced-column-name="TICKET_ID" />
+			</many-to-one>	
+		</attributes>
+	</entity>	 
+ 
+	<entity class="com.kemplerEnergy.model.rins.RetiredRIN">
+		<table name="RET_RIN"></table>
+		<attribute-override name="id">
+			<column name="RIN_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>		
+		<attributes>
+			<basic name="code">
+				<column name="CODE" />
+			</basic>
+			<basic name="retiredDate">
+				<column name="R_DATE" />
+			</basic>	
+			<one-to-one name="originalRIN">
+				<join-column name="ORIGINAL_RIN_ID"/>
+			</one-to-one>	
+		</attributes>
+	</entity>
+	
+
+	<entity class="com.kemplerEnergy.model.Outbox">
+		<table name="OUTBOX"></table>
+		<attribute-override name="id">
+			<column name="OUTBOX_ID" nullable="false" insertable="false" updatable="false"/>
+		</attribute-override>
+		<attributes>
+			<basic name="subject">
+				<column name="SUBJECT" />
+			</basic>
+			<basic name="context">
+				<column name="CONTEXT" />
+			</basic>
+			<basic name="attachements">
+				<column name="ATTACHEMENTS" />
+			</basic>
+			<basic name="addresses">
+				<column name="ADDRESSES" />
+			</basic>
+		</attributes>
+	</entity>	-->
+</entity-mappings>

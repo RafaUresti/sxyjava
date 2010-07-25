@@ -1,0 +1,16 @@
+done:vote
+done:add friends
+done:Story page
+Rss feed
+done:Search
+crawler
+delete index after crawler deletes a url
+recommendation
+
+
+fix:
+searchResults.jsp background image not extended
+
+correct votes for sites, search
+
+add date and time info to each site

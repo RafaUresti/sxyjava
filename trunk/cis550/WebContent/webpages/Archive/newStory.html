@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href="css/css_login.css" rel="stylesheet" type="text/css" />
+</head>
+<body background="images/backgnd.jpg">
+
+
+<SCRIPT>
+function validate(mnv) {
+if (mnv=="null") {
+alert('Category is a required field. Please try again.');
+event.returnValue=false;}
+else { 
+	event.returnValue=true;
+}
+}
+</SCRIPT>
+<div id="header">
+<div id="topnav">
+<!--Register | About | Login-->
+</div>
+</div>
+
+<div id="top_links">
+<div id="top_links_position">
+<body link="black" alink="black" vlink="black">
+<a href="home.jsp"><font color="#000000">LATEST</font></a> | <a href="business.jsp"><font color="#000000">BUSINESS</font></a> | <a href="science.jsp"><font color="#000000">SCIENCE</font></a> | <a href="sports.jsp"><font color="#000000">SPORTS</font></a> | <a href="entertainment.jsp"><font color="#000000">ENTERTAINMENT</font></a> | <a href="top_rated.jsp"><font color="#000000">TOP RATED</font></a> | <a href="newStory.jsp"><font color="#000000">NEW STORY</font></a></div>
+</div>
+<div id="login_body">
+<div id="login_body_position">
+<h1>Create New Story</h1>
+<br/>
+<br/>
+<br/>
+<FORM METHOD=POST ACTION="newStory" onsubmit="validate(category.value);">
+<table>
+<tr>
+Story Title: <textarea cols="50" rows="2" name=title></textarea><BR/>
+</tr>
+<tr>
+Story URL: <textarea cols="50" rows="2" name=url></textarea><BR/>
+</tr>
+<tr>
+Website Summary:  <textarea cols="50" rows="5" name="summary"></textarea><BR/>
+</tr>
+Category:<select name="category" size="1">
+			<option selected value="null">CATEGORY</option>
+			<option value="Business">Business</option>
+			<option value="Science">Science</option>
+			<option value="Sports">Sports</option>
+			<option value="Entertainment">Entertainment</option>
+			<option value="Other">Other</option>
+					</select>
+</tr>
+<P><INPUT TYPE=SUBMIT>
+</table>
+</FORM>
+
+
+</div>
+</body>
+</html>

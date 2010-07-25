@@ -1,0 +1,206 @@
+CIS 551 Project 2
+Design Specificatons
+
+Team Members:
+	Wenjie Xu - xuwenjie@seas.upenn.edu
+	Luciano Cheng - lcheng@seas.upenn.edu
+	Xiaoyi Sheng - xiaoyi@seas.upenn.edu
+
+OVERALL DESCRIPTION
+
+	Our program is structured as a series of classes that define the abstractions necessary for reconstructing TCP and UDP streams
+	
+	At the top is the Simulator object, which encapsulates all the machinery necessary for the overall simulation.  The Simulator obeject
+	is fed Packet objects from the jpcap parser, and fed a list of rules from the rule parser.
+	
+	The Simulator object then specifically has two hashtables, udpMap and tcpMap, which are responsible for keeping track of the TCP
+	and UDP sessions.  These sessions are opened / closed based on the incoming packets.
+	
+	Inside the hashtables, there are UDPSession and TCPSession objects, hashed against SessionID objects which act as a unique identifier
+	for a session with a <localhost-attacker-localport-attackerport> set.  Packets are decoded and fed to a specific session, as referenced
+	in one of the two hashtables.
+	
+	Inside a session, a packet is fed into a stream.  For udp it is one stream, for tcp it is two streams that handle reordering based
+	on sequence numbers.  Once the packet is fed into the stream, the stream and protocol rules are applied to the state of a given
+	session.  If one of the rules applies, a warning is printed to stderr.
+
+USING THE MAKEFILE:
+
+	NOTE: AS REQUESTED, the jpcap.jar file is not included in this turnin.  However, the jpcap.jar is necessary in order for the makefile
+	to run.  By default, the makefile looks for the jpcap.jar in the root of the turning folder.  However, the makefile has this as
+	a parameter, and is easy to change via visual inspection.
+
+	NOTE: The instructions below were tested and worked for MacOSX and the eniac cluster
+
+	For creating the makefile for this program, we used a fantastic open source program called 'mmake' that creates makefiles
+	automatically for Java-based projects.
+	
+	The Makefile is located in the root of our turnin directory.  To run the makefile, type the following at the root of the turnin
+	folder (note, this command DOES NOT print off all the files it compiles, it may not print the name of every file it compiles)
+	Additionally, the makefile has a auto-generated dependcy tree created by mmake, so only those files affected by a change in a
+	.java file will be built.
+	
+		> make
+	
+	To clean all the .class files, type the following.  It will recursively delete all class and related files:
+	
+		> make clean
+	
+	To run the program after a make has been executed, type the following.
+
+		> java -classpath src:jpcap.jar -Djava.library.path=. cis551proj2.IDS traces/trace1.pcap r1 
+
+	The above line will define the necessary classpath, point the library to the libjpcap.so inside the root turning folder,
+	and pass 'traces/trace1.pcap' trace file and 'r1' rule file to the program
+
+	If you already have the library path assigned, the command below is sufficient:
+
+		> java -classpath src:jpcap.jar cis551proj2.IDS traces/trace1.pcap r1
+
+	To compile a specific file, write "make" then the path of the file:
+	
+		> make src/cis551proj2/IDS.class
+		
+	A full list of make commands can be accessed by typing
+	
+		> make help
+	
+	Additionally, the Makefile is very readable and can be reconfigured based on a series of parameters at the top of the file.
+	
+	The Following are the parameters I used to make the makefile in mmake:
+		JAVAC [jikes]: javac
+		JAVAC flags []: -g -classpath jpcap.jar:src
+		JAVADOC [javadoc]:
+		JAVADOC flags [-version -author]: 
+		JAR [jar]:
+		JAR flags [cvf0]: cvfm0
+		JAR File name (e.g. foobar.jar) []: ids.jar
+		APP Bundle name (e.g. foobar.app) []: 
+		PREFIX dir. (Will be prepended to other install dir) []: 
+		INSTALL dir. for javadoc html-files. [doc/api-docs]: 
+		INSTALL dir. for class files [classes]: 
+		INSTALL dir. for shell-scripts [bin]: 
+		INSTALL dir. for the jar file  [lib]: 
+		INSTALL dir. for the app bundle  [lib]: 
+		Use CPP [y|n] ? [no]: 
+
+
+CLASS DESCRIPTIONS:
+
+Package Rule Parser:
+
+	The Rule parser is tested by unit tests using junit.  The junit tests were removed from the classtree and put in unused_classes
+	before turnin.
+
+	1.The rule parser is implemented in the ruleParser package. The package contains the following classes: Rule, TcpStreamRule, 
+		ProtocolRule, Subrule, RuleParser, and two testing classes RuleParserTest and RuleParserTest2.
+
+	2.The Rule class is a super class of TcpStreamRule and ProtocolRule, which contains the common fields of the both tcp_stream_rule 
+		and protocol_rule, with getters and setters for each component. The TcpStreamRule class contains the host type (either "from_host" 
+		or "to_host") of the sub_rule and the content of the sub_rule. The ProtocolRule class contains the proto, which is either "tcp" or 
+		"udp", and a list of SubRule objects. Each SubRule object contains the sub_rule content and the host type.
+
+	3.The RuleParser class takes a rule file in the constructor and parses it to build the host field and a list of Rule objects. The rule 
+		file is read into a Scanner object and parsed line by line. Each line is split into different components using regular expression 
+		and matched against the grammars. The RuleParser class verifies the grammar of the rule file content and builds the Rule objects 
+		accordingly. If there is any grammarical mistake for the rule file, error message will be printed with line number specified. If 
+		no error is found, the ruleParser object is built. Otherwise, an IllegalArgumentException will be thrown.
+	
+Package jpcapParser:
+	1.Class jpcapParser initializes each value for package capture. Set the reference value to OFFLINE and begin the package capture.
+	
+	2.Class PacketHandler capture the trace file, store the packages into array list and hand to simulator. Next package will be return if
+	the method getNextPacket if it is call. 
+	
+Package ids:
+	1.Class IPSession
+		IPSession is the superclass for TCPSession and UDPSession.  It has the host IP, attacker IP, local port, 
+		and attacker port, as well as a constructor that takes those arguments.  These are basically the values that
+		uniquely identify a session, and that both TCPSession and UDPSession need.
+	
+	2.Class SessionId
+		SessionId is what we use as a unique identifier for a session.  it has the host IP/port and the attacker IP/port.
+		It also has the necessary machinery to be used as a key in a hashtable.
+		
+		Inside the Simulator class, we have two hashmaps, udpMap and tcpMap.  These maps are maps of SessionIds to
+		TCPSessions / UDPSessions.  When a packet comes in, based on what type it is we pull the approperate session
+		and give the packet to the session. If the session DNE, we create a new session.  For TCP, if the packet is
+		a SYN (No ACK) or a SYN+ACK, and the session has seen a SYN or SYN+ACK before, then that session is ejected
+		and a new session is created and put in it's place.
+	
+	3.Class Simulator 
+		Handles the udp and tcp sessions.  It contains a udpMap and tcpMap that keep TCPSessions and UDPSessions
+		based on it's unique SessionID, as crated above.  Simulator is also the base object and contains the necessary links
+		to the jpcap and rule parsers.
+	
+	4.Class TcpSession
+		TCPSession is a session for a TCP connection.  It is uniquely identified by it's ID/Port pairs.
+		A TCPSession has the necessary machinery to do the all the pattern checking, for both the streams and the protocol rules.
+		A TCPSession contains two TCPStreams, one for each direction.  The TCPStreams for a TCPSession are in charge of making
+		sure that the packets are reordered according to their sequence number, and an overall list of delivered packets (in-order)
+		is kept and analyzed progressively for tcp_stream pattern matching. A TCPSession also has a list of TCP packets which contains
+		reconstructed TCP conversation from received and reordered incoming and outgoing packets for tcp_protocol pattern matching.
+	
+	5.Class TcpStream generate out-going and in-coming package stream, as a preparation for TCP stream checking and total-ordering generation.
+		Additonally, TCPStream handles out of order packets.  Specifically, it keeps the ordered packets in a list and "waiting" packets
+		in a Treemap.  Whenever a new packet comes in, it checks and sees if the new packet is the next expected packet (by calculating the
+		previous packet's sequence number plus the width).  If it is, then it adds it to the ordered list.  If it is not, it hashes it into
+		the waiting list.  Whenever a packet is successfully added to the ordered list, it checks the hashed waiting list to see if the next
+		expected packet is waiting (the packets are hashed in a treetable, and sorted by sequence number).  If it is, this packet is added,
+		and the waiting list is checked again, until the wait list contains no packets waiting to be added.
+		
+		Additionally, the TCPStream monitors for the SYN packets to start the session.  The TCPStream has a start sequence number that is
+		intially -1.  When a SYN (or SYN+ACK) packet comes in, the TCPStream sets the start sequence number.  Once the start sequence number
+		is not -1, the packets can be added to the order list as they come in, or wait until their sequence number is expected, then sent
+		into the ordered list.
+	
+	6.Class TCPPacketComparator implements Comparator to be used when sorting packets in one direction of a TCP connection. The packets are
+		sorted in assending order first by sequence number, then by ack number and lastly by TCP data length to reconstruct the TCP stream.
+		The reason to lastly sort by TCP data length is because for packets to have the same sequence, all of them except the last one 
+		has a TCP data length of 0.
+	
+	7.Class TcpConversation takes in one TCPPacket at a time and generates the ordered TCP conversation. From the establishing process of TCP connection,
+		(seeing SYN or SYN+ACK), each TCP Packet, including the SYN or SYN+ACK packet, is put in a TreeMap with sequence number as key and 
+		an LinkedList of TCP packets at the value. Packet received without previous establishment of the TCP connection will not be added
+		into the TreeMaps. Then the the 2 tree maps are converted to 2 TCP packet lists and sorted by the TCPPacketComparator. Then they are
+		merged to reconstruct the two way communication of the TCP connection and the packets are put in order without missing packets and 
+		returned as a list. If there is a missing packet, the following packets will not be put into the list until the missing one is received.
+	
+	8.Class UdpSession apply the rules for udp package stream. Like TCPSession, UDPSession uses the host IP/Port and attacker IP/Port as a unique
+		Identifier in the udpMap in the Simulator.  However, UDP Sessions do not have to handle reordering, so they hold a single list of all UDP
+		packets in the order received.  A Warning will be given is any request pattern is found.
+
+Package cis551proj2
+	
+	1. Class IDS is the entrance for IDS system, take trace file and rule file as two arguments.
+
+EXTRA CREDIT:
+
+	Our rule processing does progressive checking, meaning that as each packet comes in, the approperate rules are checked against
+	the approperate packet streams.  If a rule is violated in the middle of a stream, an error is printed to stderr.
+	
+	TCP Stream Processing:
+		For stream processing, every incoming packet gets processed on the spot.  If the packet is next in the stream, it is added.
+		Otherwise, it is put into a wait queue.  The stream checked against all applicable rules every time it is modified.  If a rule
+		applies, an error comes out of stderr to that effect.
+		
+		Note, for stream processing, each type of error only comes up once.  IE, if a Blame Attack 2 error comes up on one
+		TCP session, it will only show up once rather then showing up repeatidly (since we do progressive processing)
+	
+	TCP Protocol Processing:
+		Instead of checking after all the packages arrived, we check dynamic to achieve the instance warning handling. For a TCP stream, 
+		we generate a total-ordering stream which contains only sequential packages without gap. Check will be taken at once for each new 
+		TCP package added. Warning will be given if the pattern matching return true value. 
+		
+	UDP Protocol Processing:
+		For an updated UDP stream, check will be taken for any new package add. If the stream violate against the rules, the warning
+		will be sent as soon as it arrived.  
+		
+Test Methodology
+	1. Unit test for rule parser
+	2. Test whether each file against each rules individually 
+	3. Combine all of rules into on rule file and apply it to the trace
+	4. Black box test for a given bunch of packages and expected warning message
+	5. White box test for each method and class
+	
+	The unit tests are in a folder called 'tests' in the root of the turnin folder

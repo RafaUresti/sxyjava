@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC    
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="com.kemplerEnergy.model">
+	<class
+		name="CounterParty"
+		table="COUNTER_PARTIES">
+		
+		<id 
+			name="id" 
+			column="COUNTER_PARTY_ID" 
+			type="long">
+			<generator class="native"/>
+		</id>
+		
+		<property
+			name="name"
+			column="NAME"
+			type="string"/>
+			
+		<property
+			name="note"
+			column="NOTE"
+			type="string"/>
+		
+		<set name="addresses"
+			 table="ADDRESS">
+			 
+		 	<key column="COUNTER_PARTY_ID"/>
+			
+			<composite-element class="Address">
+			 	<property name="street" type="string" length="255" column="STREET" not-null="true"/>
+				<property name="city" type="string"	length="20" column="CITY" not-null="true"/>
+          		<property name="state" type="string" length="2" column="STATE" not-null="true"/>
+          		<property name="zipCode" type="string" length="10" column="ZIPCODE" not-null="true"/>
+			</composite-element>
+		</set>
+		
+		<set name="paymentTerms"
+			 table="PAYMENT_TERMS">
+			 
+		 	<key column="COUNTER_PARTY_ID"/>
+			
+			 <composite-element class="PaymentTerms">
+			 	<property name="termDays" type="int" column="TERM_DAYS" not-null="true"/>
+				<many-to-one
+					name="deliveryMethod"
+					column="SHIP_METHOD_ID"
+					class="ShipMode"
+					not-null="true"/>
+			</composite-element>
+		</set>
+		
+		<joined-subclass 
+			name="Vendor"
+			table="VENDOR">
+			
+			<key column="VENDOR_ID"/>
+			<property 
+				name="expenseAccnt"
+				column="EXPENSE_ACCNT" 
+				type="int"/>
+			<property
+				name="bussinessType"
+				column="BUSSINESS_TYPE"
+				type="string"/>
+			<property
+				name="holdStatus"
+				column="HOLD_STATUS"
+				type="string"/>
+		</joined-subclass>
+
+		<joined-subclass 
+			name="Customer"
+			table="CUSTOMERS">
+			
+			<key column="CUSTOMER_ID"/>
+			<property 
+				name="DUNNo"
+				column="DUN_NO" 
+				type="int"/>
+			<property
+				name="storeFinancial"
+				column="STORE_FINIANCIAL"
+				type="int"/>
+			<property
+				name="incomeAccnt"
+				column="INCOME_ACCNT"
+				type="int"/>
+			<property
+				name="creditLimit"
+				column="CREDIT_LIMIT"
+				type="int"/>
+		</joined-subclass>					
+	</class>
+</hibernate-mapping>

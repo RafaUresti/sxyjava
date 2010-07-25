@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC    
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="com.kemplerEnergy.model">
+	<class
+		name="Product"
+		table="PRODUCTS">
+		
+		<id
+			name="id"
+			column="PRODUCT_ID"
+			type="long">
+			<generator class="native"/>
+		</id>
+		
+		<property
+			name="name"
+			column="NAME"
+			type="string"
+			length="255"
+			not-null="true"
+			update="false"/>
+		
+		<many-to-one
+			name="commodityType"
+			column="COMMODITY_ID"
+			class="Commodity"
+			not-null="true"
+			insert="false"
+			update="false"/>
+		
+		<joined-subclass 
+			name="PhysicalProduct"
+			table="PHYSICAL_PRODUCT">
+			
+			<key column="PHYSICAL_PRODUCT_ID"/>
+			<property 
+				name="shipUnit"
+				column="SHIP_UNI" 
+				type="string"/>
+			<property
+				name="quantity"
+				column="QUANTITY"
+				type="int"/>
+			<property
+				name="region"
+				column="REGION"
+				type="string"/>
+				
+			<many-to-one
+				name="shipMethod"
+				column="SHIP_METHOD_ID"
+				class="ShipMode"
+				foreign-key="FK_PRODUCT_SHIP"/>
+				
+		</joined-subclass>
+					
+	</class>
+</hibernate-mapping>
+  
