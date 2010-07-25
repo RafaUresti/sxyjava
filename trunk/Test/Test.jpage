@@ -1,3 +1,0 @@
-ArrayList<String> list = new ArrayList<String>();
-list.add("test1");
-list.add("Test2")
