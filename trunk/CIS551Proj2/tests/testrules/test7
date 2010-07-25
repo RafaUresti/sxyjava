@@ -1,8 +1,0 @@
-host=192.168.0.1
-
-name=test7
-type=tcp_stream
-host_port=any
-attacker_port=any
-attacker=any
-to_host="<ul><li>15% &nbsp; Midterm 1 - date tentatively Feb. 10th </li><li>15% &nbsp; Midterm 2 - date March 31st </li><li>25% &nbsp; Final exam - date to be determined </li><li>20% &nbsp; Two individual projects </li><li>20% &nbsp; Group project </li><li>05% &nbsp; Course participation </li></ul>"
