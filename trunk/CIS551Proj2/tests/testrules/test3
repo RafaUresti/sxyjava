@@ -1,0 +1,9 @@
+host=192.168.0.1
+
+name=test3
+type=protocol
+proto=udp
+host_port=any
+attacker_port=65535
+attacker=215.212.233.3
+to_host=".*"

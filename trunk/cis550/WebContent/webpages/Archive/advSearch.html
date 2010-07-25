@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Advanced Search</title>
+</head>
+<body>
+
+<FORM METHOD=POST ACTION="AdvancedQuery">
+Search Word: <INPUT TYPE=TEXT NAME=advsearch SIZE=20><BR>
+Category:<select name="category" size="1">
+			<option selected value="">Category...</option>
+			<option value="">Category...</option>
+			<option value="business">Business</option>
+			<option value="science">Science</option>
+			<option value="sports">Sports</option>
+			<option value="entertainment">Entertainment</option>
+			</select>
+			
+Popularity:<select name="popularity" size="1">
+			<option selected value=""> Votes...</option>
+			<option value="100">More than 100</option>
+			<option value="50">More than 50</option>
+			<option value="20">More than 20</option>
+			<option value="0">More than 0</option>			
+			</select>
+Time:<select name="time" size="1">
+			<option selected value=""> Time...</option>
+			<option value="a">Past 24 hours</option>
+			<option value="b">This week</option>
+			<option value="c">This month </option>
+			<option value="d">This year</option>
+			<option value="e">Older</option>
+			</select>
+<P><INPUT TYPE=SUBMIT value="Submit">
+</FORM>
+
+</body>
+</html>

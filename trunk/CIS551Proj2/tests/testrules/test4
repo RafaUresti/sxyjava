@@ -1,0 +1,21 @@
+host=192.168.0.1
+
+name=test4
+type=protocol
+proto=udp
+host_port=any
+attacker_port=any
+attacker=any
+from_host="\+OK.*\r\n"
+to_host="LAST NAME .*\r\n"
+from_host="\+OK.*\r\n"
+to_host="FIRST NAME.*\r\n"
+from_host="\+OK.*\r\n"
+to_host="TELE NUM .*\r\n"
+from_host="\+OK.*\r\n"
+to_host="ADDRESS.*\r\n"
+from_host="\+OK.*\r\n"
+to_host="EMAIL.*\r\n"
+from_host="\+OK.*\r\n"
+to_host="OCCUPATION.*\r\n"
+from_host="\+OK.*\r\n"

@@ -1,0 +1,26 @@
+
+<module>
+
+	<!-- Inherit the core Web Toolkit stuff.                  -->
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name='com.google.gwt.i18n.I18N' />
+	<inherits name='net.sf.hibernate4gwt.Hibernate4Gwt15' />
+	<inherits name='net.sf.hibernate4gwt.emul.java5.ejb3.Ejb3' /> 
+
+	<!-- Specify the app entry point class.                   -->
+	<entry-point class="com.kemplerEnergy.client.RINsMain" />
+	
+	<!-- Additional Source Path -->
+	<source path='client' />
+	<source path='model' />
+	<source path='exception' />
+	
+	<!-- Servlet path -->
+	<servlet path="/UploadServlet" class="com.kemplerEnergy.server.rins.UploadServlet" />
+	<servlet path="/RINsRPC" class="com.kemplerEnergy.server.rins.RINsRPCImpl" />
+	<servlet path="/SessionGenerator" class="com.kemplerEnergy.server.rins.SessionGenerator" />
+	<servlet path="/DocRetrieve" class="com.kemplerEnergy.server.rins.DocRetrieve" />
+	
+	<!-- Admin 1B -->
+	<servlet path="/UserRemote" class="com.kemplerEnergy.server.admin.UserRemoteImpl" />
+</module>

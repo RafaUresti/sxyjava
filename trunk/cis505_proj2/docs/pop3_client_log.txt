@@ -1,0 +1,160 @@
+POP3 CLIENT LOG:
+
+Pop server: localhost 6230
+SMTP server: localhost 25
+Please enter your email address:
+d1u1@d1.com
+Please enter your password:
+aaa
++OK POP3 server ready
+
++OK valid username
+
++OK you are authorized
+
+Welcome to cis505g48 email client!
+Press "1" to check emails, "2" to send emails, "3" to quit:1
++OK POP3 server ready
+
++OK valid username
+
++OK you are authorized
+
+Pop3 response : +OK you are authorized
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+noop
++OK noob
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+stat
++OK 1 226
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+list
++OK 1 messages (226 octets)
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+list 1
++OK 1 226
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+retr 1
++OK 226 octets
+
+Delivered-To: d1u1@d1.com
+
+Received: from 127.0.0.1
+
+        by 127.0.0.1;
+
+        Wed, 08 Apr 2009 01:19:18 -0400 (EDT)
+
+Return-Path: <d1u1@d1.com>
+
+Date: Wed, 08 Apr 2009 01:19:18 -0400 (EDT)
+
+mail content
+
+hello world.
+
+.
+
+.
+
+
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+top 1 0
++OK
+
+Delivered-To: d1u1@d1.com
+
+Received: from 127.0.0.1
+
+        by 127.0.0.1;
+
+        Wed, 08 Apr 2009 01:19:18 -0400 (EDT)
+
+Return-Path: <d1u1@d1.com>
+
+Date: Wed, 08 Apr 2009 01:19:18 -0400 (EDT)
+
+
+
+.
+
+
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+top 1 100
++OK
+
+Delivered-To: d1u1@d1.com
+
+Received: from 127.0.0.1
+
+        by 127.0.0.1;
+
+        Wed, 08 Apr 2009 01:19:18 -0400 (EDT)
+
+Return-Path: <d1u1@d1.com>
+
+Date: Wed, 08 Apr 2009 01:19:18 -0400 (EDT)
+
+
+
+mail content
+hello world.
+.
+
+
+.
+
+
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+uidl
++OK
+1 -1692097374
+.
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+uidl 1
++OK 1 -1692097374
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+dele 1
++OK message 1 deleted
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+retr 1
+-ERR no such message
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+rset
++OK
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+list
++OK 1 messages (226 octets)
+
+Please use the following standard POP commands:
+STAT; LIST [msg]; RETR msg; DELE msg; NOOP; TOP msg n; UIDL [msg]; RSET; QUIT
+quit
++OK user quit
+
+Press "1" to check emails, "2" to send emails, "3" to quit:

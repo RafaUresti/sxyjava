@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC    
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping default-access="field">
+	<class
+		name="com.kemplerEnergy.model.Admin"
+		table="ADMIN">
+		
+		<id 
+			name="id" 
+			column="ADMIN_ID" 
+			type="long">
+			<generator class="native"/>
+		</id>
+				
+		<property
+			name="userName"
+			column="USER_NAME"
+			type="string"
+			length="255"
+			not-null="true"
+			update="false"/>
+			
+		<property
+			name="password"
+			column="PASSWORD"
+			type="string"
+			length="255"
+			not-null="true"/>
+		
+		<property
+			name="phone"
+			column="USER_PHONE"
+			type="string"
+			length="20"
+			not-null="true"/>
+		
+		<property
+			name="email"
+			column="USER_EMAIL"
+			type="string"
+			length="255"
+			not-null="true"/>
+
+		<property
+			name="IM"
+			column="USER_IM"
+			type="string"
+			length="255"
+			not-null="true"/>	
+	</class>
+</hibernate-mapping>

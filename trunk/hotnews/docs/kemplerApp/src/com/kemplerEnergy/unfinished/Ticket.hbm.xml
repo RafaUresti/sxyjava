@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!DOCTYPE hibernate-mapping PUBLIC    
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="com.kemplerEnergy.model">
+	<class name="Ticket" table="TICKET">
+		
+		<id 
+			name="id" 
+			column="TICKET_ID" 
+			type="long">
+			<generator class="native"/>
+		</id>
+		
+		<discriminator 
+			column="PHYSICAL_TICKET"
+			type="boolean"/>
+			
+		<property
+			name="ticketNo"
+			column="TICKET_NO"
+			type="string"
+			length="255"
+			not-null="true"
+			update="false"/>
+
+		<property
+			name="status"
+			column="TICKET_STATUS"
+			type="string"
+			length="10"
+			not-null="true"/>
+						
+		<property
+			name="comment"
+			column="COMMENT"
+			length="65535"
+			type="string"/>
+			
+		<many-to-one
+			name="trader"
+			column="TRADER_ID"
+			class="Trader"
+			not-null="true"
+			update="false"/>
+			
+		<idbag name="contracts" 
+			   table="CONTRACT">
+			 
+			 <collection-id type="long" column="CONTRACT_ID">
+			 	<generator class="identity"/>
+			 </collection-id >
+			 <key column="TICKET_ID"/>
+			
+			 <composite-element class="Contract">
+				<property name="tradeType" column="TRADE_TYPE" type="string" length="255" not-null="true"/>
+				<property name="tradePeriod" column="TRADE_PERIOD" type="string" length="255" not-null="true"/>
+				<property name="contractType" column="CONTRACT_TYPE" type="string" length="255" not-null="true"/>
+				<property name="pricingType" column="PRICING_TYPE" type="string" length="255" not-null="true"/>
+				<property name="futurePrice" column="FUTURE_TYPE" type="string" length="255"/>
+				<property name="basis" column="BASIS" type="double"/>
+				<property name="fullyPrice" column="FULLY_PRICE" type="double"/>
+				
+				<many-to-one
+					name="productType"
+					column="PRODUCT_ID"
+					class="Product"
+					not-null="true"/>
+					
+			</composite-element>
+		</idbag>
+
+
+		<join table="TICKET_BROKER" optional="true">
+			<key column="TICKET_ID"/>
+			<many-to-one name="broker"
+						 class="Broker"
+						 column="BROKER_ID"
+						 not-null="true"/>
+		</join>
+
+		<join table="TICKET_COUNTER_PARTY" optional="true">
+			<key column="TICKET_ID"/>
+			<many-to-one name="counterParty"
+						 class="CounterParty"
+						 column="COUNTER_PARTY_ID"
+						 not-null="true"/>
+		</join>				
+
+		<subclass name="PhysicalTicket" discriminator-value="true">
+			<property name="ratable" column="RATABLE" type="boolean"/>
+			<property name="FOBPoint" column="FOB_PINT" type="string"/>
+			<many-to-one
+				name="defaultShipMode"
+				column="SHIP_METHOD_ID"
+				class="ShipMode"
+				foreign-key="FK_TICKET_SHIP"/>
+				
+		</subclass>	
+	</class>
+</hibernate-mapping>
+  
