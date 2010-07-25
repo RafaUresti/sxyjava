@@ -1,0 +1,12 @@
+host=0.0.0.1
+
+name=test2
+type=protocol
+proto=tcp
+host_port=110
+attacker_port=any
+attacker=any
+to_host="CREDIT CARD NUM.*\r\n"
+from_host="\+OK.*\r\n"
+to_host="VALID DATE.*\r\n"
+from_host="\+OK.*\r\n"

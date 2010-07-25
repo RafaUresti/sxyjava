@@ -1,0 +1,30 @@
+Command for Trawler:
+	java -cp "lib/" Trawler 8888 scripts/three.topo
+	java -cp "lib/" Trawler 8888 scripts/linkstate-ring.topo
+Command for emulation nodes:
+	java -cp "lib/;proj/" Fishnet emulate localhost 8888 10000
+	java -cp "lib/;proj/" Fishnet emulate localhost 8888 10001
+	
+Command for simulation nodes:
+Ping test:
+	java -cp "lib/;proj/" Fishnet simulate 2 scripts/pingtest.fish
+Flooding test:
+	java -cp "lib/;proj/" Fishnet simulate 5 scripts/floodtest.fish
+	java -cp "lib/;proj/" Fishnet simulate 5 scripts/ring-ls.topo
+	java -cp "lib/;proj/" Fishnet simulate 5 scripts/ls5.topo
+	java -cp "lib/;proj/" Fishnet simulate 25 scripts/25ls.fish
+	
+Fishnet Class Usage:  
+java Fishnet <simulate> <num nodes> <topo file> [fishnet file] [timescale]
+or
+java Fishnet <emulate> <trawler host name> <trawler port> <local port to use> [fishnet file]
+
+
+
+D:/"My Documents"/UPenn/MCIT/Courses/"CIS 553"/Project1/fishnet_release
+project folder:
+D:\SoftDev\workspace\CIS553.Pj1.Fishnet
+
+
+Linux Version:
+java -cp "lib/:proj/" Fishnet simulate 5 scripts/ls5.topo

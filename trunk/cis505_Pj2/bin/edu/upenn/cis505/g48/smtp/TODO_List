@@ -1,0 +1,88 @@
+
+TODO:
+
+	1. thread poll other cluster (done)
+	2. finish registry comm (done)
+	3. data synchronization (done)
+	4. all esmtp commands (done)
+	5. cluster internal comm, listening server (done)
+	
+	6. in Handle_Create_Domain:
+		//TODO: create domain and postmaster@domain locally (done)
+		//TODO: broadcast to all nodes in my cluster (done)
+		
+	7. in Handle_NEWU:
+		//TODO: create domain and postmaster@domain locally (done)
+		//TODO: broadcast to all nodes in my cluster (done)
+		
+	8. // XXX need to clarify header format: blank line?!
+	
+	9. when send an email to other cluster, make sure the server you connect to is alive
+		try each one to see which is ok to send. (done)
+	
+	10. (DONE) cannot create user@domain when there is only one server 
+	
+	11. test booting got init data
+	
+	
+cluster internal_commu commands:
+	1. [IS_RESD domain_name] if the domain is reserved in you
+		response: [YES] [NO]
+
+	
+	
+Start comm lines:
+
+server:
+
+	java edu.upenn.cis505.g48.integrated_server.set_debug_world_data
+	
+	usa 22 mod1.seas.upenn.edu 39320
+
+
+	
+	china 12 mod1.seas.upenn.edu 47709
+	china 62 mod1.seas.upenn.edu 47709
+	
+	usa 15 mod1.seas.upenn.edu 47709
+	usa 16 mod1.seas.upenn.edu 47709
+	usa 17 mod1.seas.upenn.edu 47709
+
+
+smtp client:
+	java edu.upenn.cis505.g48.smtp.SMTP_User_Client
+	
+	mod7.seas.upenn.edu 45252
+	
+	mod4.seas.upenn.edu 45212
+	
+	mod6.seas.upenn.edu 45215
+	
+POP3 client:
+	java edu.upenn.cis505.g48.pop3.Pop3Client
+	
+	mod4.seas.upenn.edu 45312 asdf@g51a
+	
+	mod19.seas.upenn.edu 4242 changbin@g51a wnan
+
+	localhost port user@domain psw
+	
+	mod4.seas.upenn.edu 45312 changbin@g53a wnan
+	
+	mod13.seas.upenn.edu 40111 changbin@g53a wnan
+	
+	
+	
+	
+	
+	java edu.upenn.cis505.registry.Registry
+
+
+// login to mod
+mod13.seas.upenn.edu
+mod11.seas.upenn.edu
+
+
+
+
+	

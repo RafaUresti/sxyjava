@@ -1,0 +1,9 @@
+host=255.255.255.255
+
+name=test1
+type=protocol
+proto=tcp
+host_port=any
+attacker_port=any
+attacker=any
+to_host="Open it"

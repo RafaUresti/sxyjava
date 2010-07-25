@@ -1,0 +1,25 @@
+Main method descriptions:
+
+1. Server / Client has main methods:
+	ATMClient.java
+	BankServer.java
+	
+	*These methods run the ATM and Server programs
+	
+2. There are 3 main methods for generating ekys
+	BankKeys.java -> Generating RSA keypairs (specifically for the bank)
+	KeyGen.java -> Generates RSA keypairs, or an AES key
+	MakeAccounts.java -> Generates Account pairs
+
+3. Things to fill in:
+	LogInterface.java ->
+	Log.java -> Log Encryption goes here
+	
+	
+Procedure for testing
+	1. Create the bank keys using BankKeys.java
+	2. Create the Accounts using MakeAccounts.java
+		- Creates Accounts and ATM cards
+	3. Start the server in BankServer.java
+	
+	

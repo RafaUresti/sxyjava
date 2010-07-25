@@ -1,0 +1,56 @@
+CIS 551 Project 3
+Test case solutions for 1.1:
+	SDES
+	Raw Key	Plaintext Ciphertext
+	0000000000 00000000 11110000
+	1111111111 11111111 00001111
+	0000011111 00000000 01000011
+	0000011111 11111111 11100001
+	1000101110 00111000 00011100
+	1000101110 00001100 11000010
+	0010011111 11111100 10011101
+	0010011111 10100101 10010000
+	
+	3SDES
+	Raw Key 1 	Raw Key 2 Plaintext Ciphertext
+	0000000000 0000000000 00000000 11110000
+	1000101110 0110101110 11010111 10111001
+	1000101110 0110101110 10101010 11100100
+	1111111111 1111111111 10101010 00000100
+	1000101110 0110101110 11111101 11100110
+	1011101111 0110101110 01001111 01010000
+	0000000000 0000000000 01010010 10000000
+	1111111111 1111111111 00100101 10010010	
+
+Test case solutions for 1.2:
+	The SDES encoding for "CRYPTOGRAPHY" using the key 0111001101:
+	0110000111001010101101101111010011000101011101101111110001110111
+	
+	The decrypted text for the msg1.txt is:
+	MY OWN EXPERIENCE IS THAT DEVELOPERS WITH ACLEAN EXPRESSIVE SET OF SPECIFIC SECURITY REQUIREMENTS CAN BUILD A VERY RIGHT MACHINE .THEY DON'T HAVE TO BE SECURITY GURUS, BUT THEY HAVE TO UNDERSTAND WHAT THEY'RE TRING TO BUILD AND HOW IT SHOLD WORK.  RICK SMITH
+	Key = 0101011100;
+	
+	The decrypted text for the msg2.txt is:
+	THERE IS NO SECURITY ON THIS EARTH, THERE IS ONLY OPPORTUNITY.  DOUGLAS MACARTHUR
+	Key1 = 0101110010; Key2 = 1110110011;
+	
+Strategy for identifying strings:
+	1. 	Basic idea is establish a local dictionary and perform word matching, a plain text is considered 'right'
+		if there are words matching with dictionary. 
+	2. 	First, check the length encrypted message, if it is too long (say more than 250 bits), the cracker will
+		get the first chunk (say 250 bits), this action will speed up the cracker
+	3. 	For each key or key pair, we first decrypt the chunk pass in, and generate temporary plain text. After
+		divided plain text into words by punctuation, we look up each word into local dictionary.
+	4. 	250 bits = 50 bytes (under CASCII) = approximate 10 words. So if the dictionary return true more than
+		4 times, we will look up the whole decrpted text, and if the ratio for correct words is larger than
+		threshold (say 0.4), then the plain text will print on the screen.
+	5. 	Our cracker will keep working even we got an 'answer', until try all the key or key pair. 
+	6. 	The result is only "most likely" answer (see counter examples in Drawback part below), and so human being
+		should act like a final checker and confirm the answer.
+
+Drawback of our method and Possible improvement in the future
+	1. 	The dictionary may not be good, and also need maintain.
+	2. 	Verbs and nouns have different type, and cause false positive.
+	3. 	The threshold is artificial, and it may be too high for some case, for example, the plain text contain
+		too many names, address, time, non-English words, long words, etc. 
+	4. 	We match the word actively, and we can also delete the impossible answer by bi-gram/triple-gram.
