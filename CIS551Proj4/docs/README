@@ -1,0 +1,72 @@
+Team Information
+	
+	Wenjie Xu - xuwenjie@seas.upenn.edu 	
+	Luciano Cheng - lcheng@seas.upenn.edu
+	Xiaoyi Sheng - xiaoyi@seas.upenn.edu
+
+Terminologies used:
+	ID: ID of the ATM client;			Acc#: Account number of the ATM card	
+	K(bank): public key of Bank server  k(bank): private key of Bank server	
+	K(user): public key of ATM card		k(user): private key of ATM card	
+	someKey{} includes the messages to be encrypted by the someKey
+	[] contains the whole message sent
+
+For authentication:
+
+1. The ATM client sends the Bank server a message containing [ID, K(bank){Acc#, nonce}].
+Explaination: Nonce is used here to avoid replay attacks.
+
+2. The Bank server decrypts second part of the above message by k(bank), then sends the ATM client
+[K(user){Acc#, nonce}, K(user){SessionKey}].
+
+3. The ATM client then decrypts the above message from the bank with k(user) to obtain the Acc#, nonce and Session Key.
+If both the Acc# and nonce are right, the ATM client will send to the Bank server [K(bank){SessionKey}]. 
+Explaination: Only the Bank server with k(bank) will be able to decrypt the message to retrieve the Acc# and nonce, and obtain the K(user) to send the encrypted message.
+This step verifies the Bank server to the ATM client and informs the ATM client the SessionKey.
+
+4. The Bank server decrypts the above message with k(bank) and verifies the SessionKey. 
+If right, sends back to the ATM client "Accept". Otherwise send "reject".
+Explaination: This step makes sure that the ATM client does have the right k(user) and have received the SessionKey so that SessionKey encrypted
+transactions can initiate.
+
+
+For transactions:
+
+1. The ATM client sends a message with [SessionKey {request, ID, Acc#, timestamp}, SessionKey{k(user){request, ID, Acc#, timestamp}}]. 
+The request is deposit, withdraw, check balance or quit. The last part of the message serves
+as a signature of the transaction that is verified by decrypting with K(user). This verification step prevents attackers from impersonating the ATM machine even 
+if the SessionKey is cracked, as only the ATM client that has the ATM card knows the k(user). 
+The signature is written to log and also serves as an evidence for the transaction to be initiated by the user.
+
+2. The Bank server receives the above message, decrypts message with SessionKey and processes the request, then sends back an acknowledgement [SessionKey{reply, timestamp}].
+The ATM client the decrypts the acknowledgement and verifies that the timestamp is the same as the previously sent timestamp. 
+If verification successful, the reply is displayed. Otherwise, warning is displayed.
+The purpose of the is to prevent attackers to replay the message.
+
+For auditing:
+Auditing is done by writing LogMessage objects to log file. Each LogMessage is encrypted with K(bank) when being written in to the log file.
+1. In the authentication phase, log message is written whenever receiving a message from ATM client and sending a message to ATM client. This part of the signature doesn't involve signatures. Then 
+2. In the transaction phase, the UniversalMessage received from the ATM client includes a SessionKey encrypted serialized TransactionMessage and the corresponding encrypted signature.
+Both of them are decrypted and put into LogMessage and written into log file.
+3. When the BankServer got some exception, the exception is written into the log file according to the given implementation.
+
+To audit from the log file, the serialized object is read and decrypted. If it's a LogMessage, the signature can be verified against data field. The data field can be converted to a TransactionMessage to reveal all the information about the transaction.
+
+
+
+Instructions for running the software:
+To build the project, at the root of the project, type
+> make
+To run a java program, e.g. BankKeys, type
+> java -classpath src:lib/bcprov-jdk15-134.jar -Djava.library.path=. cis551proj4.BankKeys
+
+Run BankKeys.java to create bank.key and bank.pub.
+Run MakeAccounts.java and follow the instructions to create an ATMCard.
+Run BankServer.java to start the Bank server
+Run ATMClient.java with ID and Bank address to start an ATM client
+Follow the instructions displayed by the ATMClient for authentication and transactions
+
+Contribution
+Wenjie Xu - Coding and Debugging for protocol implementation, protocol Design
+Xiaoyi Sheng - Coding and Debugging for protocol implementation, protocol Design
+Luciano Cheng - Coding and Debugging for Log, Log viewer, protocol Design

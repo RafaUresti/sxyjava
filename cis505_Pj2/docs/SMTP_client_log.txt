@@ -1,0 +1,47 @@
+SMTP CLIENT LOG:
+
+Pop server: localhost 6230
+SMTP server: localhost 25
+Please enter your email address:
+d1u1@d1.com
+Please enter your password:
+aaa
++OK POP3 server ready
+
++OK valid username
+
++OK you are authorized
+
+Welcome to cis505g48 email client!
+Press "1" to check emails, "2" to send emails, "3" to quit:2
+reply: [220 Hello from g48's smtp server :P
+]
+HELO there
+got reply: [250 Hello too!
+]
+EHLO there
+got reply: [250 eHlo too!
+]
+NOOP
+got reply: [250 OK, but don't always NOOP!
+]
+MAIL FROM:<my@g.com>
+got reply: [250 MAIL OK: user: my, domain: g.com
+]
+RCPT TO:<d1u1@d1.com>
+got reply: [250 RCPT OK: user: d1u1, domain: d1.com
+]
+data
+got reply: [354 please input email body
+]
+mail content
+no reply from remote host.
+got reply: [null]
+hello world.
+no reply from remote host.
+got reply: [null]
+.
+got reply: [250 Message accepted for delivery
+]
+quit
+got reply: [null]

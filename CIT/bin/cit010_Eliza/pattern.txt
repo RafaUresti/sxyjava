@@ -1,0 +1,49 @@
+Q: mother
+A: Tell me more about your family.
+
+Q: How are you
+A: I am good.
+
+Q: love
+A: Love isn't always a simple thing.
+
+Q: I remember
+S: What made you think of
+
+Q: are you
+S: am I
+
+Q: I am
+S: you are
+
+Q: you are
+S: I am
+
+
+Q: me
+S: you
+
+Q: my
+S: your
+
+Q: your
+S: my
+
+Q: I
+S: you
+
+Q: you
+S: I
+
+Q: mine
+S: yours
+
+Q: yours
+S: mine
+
+
+Tell me more about it.
+I'd like to hear more about it.
+Then?
+What's next?
+Please go on.

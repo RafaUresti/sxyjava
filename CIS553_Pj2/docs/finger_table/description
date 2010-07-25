@@ -1,0 +1,11 @@
+Finger Table
+
+We use our link state code for the underlying network layer.
+
+Each node on the Chord periodically sends out a FIX_FINGERS packet with a 32-entry table and its key to its successor.  
+
+When a node receives a FIX_FINGERS packet, it will check the empty entries. If the finger ID belongs to it, it fills the entry with its address and key. If all the entries in the table have been filled, send a FIX_FINGERS_REPLY packet to the original node. 
+
+When a node receives a FIX_FINGERS_REPLY packet, update its finger table with the 32-entry table in it.
+
+When a node seach a key, it will check the entries in the finger table from the end to the beginning. Once it finds the corresponding entry, it forwards the packet to the node address in the entry.
